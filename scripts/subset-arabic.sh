@@ -2,9 +2,9 @@
 # Regenerates the self-hosted Arabic font files. Requires: pip install fonttools brotli
 #   public/fonts/amiri-ar.woff2, aref-ar.woff2   trimmed full faces (Arabic invitations)
 #   app/fonts-local/*.woff2                        tiny subsets for the Arabic shown in French mode
-# Run after changing the Arabic names in site.config.ts:  scripts/subset-arabic.sh "عمر و سوسن"
+# Run after changing the Arabic names in site.config.ts:  scripts/subset-arabic.sh "الاسم و الاسم"
 set -euo pipefail
-NAMES="${1:-عمر و سوسن}"
+NAMES="${1:-الاسم و الاسم}"
 TMP="$(mktemp -d)"
 B=https://raw.githubusercontent.com/google/fonts/main/ofl
 curl -sfL -o "$TMP/Amiri.ttf" "$B/amiri/Amiri-Regular.ttf"

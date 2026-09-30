@@ -7,7 +7,7 @@ const weekdays = ["الأحد", "الاثنين", "الثلاثاء", "الأر�
 const months = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 const { day, monthIndex, year, weekdayIndex } = dateParts;
 const weekday = weekdays[weekdayIndex];
-/** "الخميس 29 أكتوبر 2026" */
+/** e.g. "السبت 14 أكتوبر 2028" */
 const fullDate = `${weekday} ${day} ${months[monthIndex]} ${year}`;
 const { venue } = siteConfig;
 

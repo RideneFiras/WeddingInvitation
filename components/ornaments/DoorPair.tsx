@@ -1,5 +1,5 @@
 /**
- * A pair of Carthage / Sidi Bou Saïd arched doors, drawn as one symbol in a 300×580 box.
+ * A pair of Tunisian (Sidi Bou Saïd style) studded arched doors, drawn as one symbol in a 300×580 box.
  * Each leaf renders the symbol and clips to its own half, so studs and carvings
  * stay perfectly continuous across the seam when closed.
  */

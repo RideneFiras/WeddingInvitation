@@ -71,7 +71,7 @@ const mobile = { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch
   await p2.evaluate(() => window.scrollTo(0, 1500));
   await p2.waitForTimeout(400);
   check("Scroll is locked while doors are closed", (await p2.evaluate(() => window.scrollY)) === 0);
-  await p2.click('button[aria-label="Ouvrir l\'invitation"]');
+  await p2.click(".doors-open-btn");
   await p2.waitForTimeout(4500);
   check("Doors are gone after tap", (await p2.locator(".doors").count()) === 0);
   const audio = await p2.evaluate(() => {
@@ -114,7 +114,7 @@ const mobile = { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch
   const ctx = await browser.newContext({ ...mobile, reducedMotion: "reduce" });
   const p = await ctx.newPage();
   await p.goto(`${base}/i/${FR}`, { waitUntil: "networkidle" });
-  await p.click('button[aria-label="Ouvrir l\'invitation"]');
+  await p.click(".doors-open-btn");
   await p.waitForTimeout(1500);
   check("Reduced motion: doors cleared by a fade", (await p.locator(".doors").count()) === 0);
   await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
@@ -133,7 +133,7 @@ const mobile = { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch
   await p.goto(`${base}/i/${FR}`, { waitUntil: "networkidle" });
   await p.evaluate(() => localStorage.setItem("os-doors-opened", "1"));
   await p.reload({ waitUntil: "networkidle" });
-  await p.click('button[aria-label="Ouvrir l\'invitation"]');
+  await p.click(".doors-open-btn");
   await p.waitForTimeout(1100);
   check("Returning visitor: doors open in ~0.6s", (await p.locator(".doors").count()) === 0);
   await ctx.close();

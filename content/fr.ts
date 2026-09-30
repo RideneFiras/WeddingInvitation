@@ -6,7 +6,7 @@ const weekdays = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi",
 const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 const { day, monthIndex, year, weekdayIndex } = dateParts;
 const weekday = weekdays[weekdayIndex];
-/** "jeudi 29 octobre 2026" */
+/** e.g. "samedi 14 octobre 2028" */
 const fullDate = `${weekday} ${day} ${months[monthIndex]} ${year}`;
 const { venue } = siteConfig;
 

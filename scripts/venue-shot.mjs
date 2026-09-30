@@ -5,7 +5,7 @@ const c = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFac
 const p = await c.newPage();
 p.on("pageerror", (e) => console.log("E", e.message));
 await p.goto("http://localhost:3100" + (process.env.P ?? "/i/MUNoZXJzH0thcmltHkFtaXJhH01tZSAmIE0uIEJlbiBTYWxhaB9mcg"), { waitUntil: "networkidle" });
-await p.click("button[aria-label]");
+await p.click(".doors-open-btn");
 await p.waitForTimeout(3500);
 const top = await p.evaluate(() => document.querySelector("#venue").getBoundingClientRect().top + scrollY);
 const hgt = await p.evaluate(() => document.querySelector("#venue").offsetHeight);

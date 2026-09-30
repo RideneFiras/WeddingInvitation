@@ -1,6 +1,6 @@
 /**
  * Every wedding fact lives here. Components never hardcode names, dates or places.
- * Anything marked TODO must be supplied / confirmed by the couple (see README).
+ * This is the template's placeholder data: replace it with your own (see README).
  */
 
 export type ProgrammeKey = "arrival" | "ceremony" | "dinner" | "celebration";
@@ -15,13 +15,15 @@ export type Photo = {
 
 export const siteConfig = {
   couple: {
-    latin: { first: "Omar", second: "Saousen" },
-    // TODO: Arabic spelling must be confirmed by the couple before launch.
-    arabic: { first: "عمر", second: "سوسن" },
-    monogram: { first: "O", second: "S" },
+    // Replace with the couple's first names (Latin script: hero, cards, previews).
+    latin: { first: "Name", second: "Name" },
+    // Arabic spelling of the same names. After changing them, run scripts/subset-arabic.sh "<first> و <second>".
+    arabic: { first: "الاسم", second: "الاسم" },
+    // Letters on the wax seal, favicon and closing monogram.
+    monogram: { first: "N", second: "N" },
   },
 
-  // TODO: family names for the invitation text ("Les familles X et Y…").
+  // Family names for the invitation text ("Les familles X et Y…").
   // While null, the card reads "Nos familles ont l'immense joie…".
   families: {
     fr: null as null | { first: string; second: string },
@@ -29,51 +31,49 @@ export const siteConfig = {
   },
 
   date: {
-    /** Local wall-clock date and time at the venue. */
-    iso: "2026-10-29",
-    // TODO: confirm the start time (placeholder given in the brief).
+    /** Local wall-clock date and time at the venue (YYYY-MM-DD, HH:MM). */
+    iso: "2028-10-14",
     time: "20:00",
     timezone: "Africa/Tunis",
-    /** Africa/Tunis is UTC+1 all year (no DST). Keep in sync with `timezone`. */
+    /** UTC offset of `timezone` on the wedding day, e.g. "+01:00" (Africa/Tunis has no DST). */
     utcOffset: "+01:00",
-    /** Used for the calendar event end. TODO: confirm. */
+    /** Used for the calendar event end. */
     durationHours: 6,
   },
 
   venue: {
-    name: "Dar Bouraoui",
-    // TODO: confirm the Arabic spelling of the venue name.
-    nameAr: "دار بوراوي",
-    areaAr: "المعلقة، قرطاج",
-    area: "La Maâlga, Carthage",
+    name: "Venue Name",
+    nameAr: "اسم القاعة",
+    area: "Neighbourhood, City",
+    areaAr: "الحي، المدينة",
     /** Short place name shown with the venue (hero, previews). */
-    city: "Carthage",
-    cityAr: "قرطاج",
-    address: "Rue Qualité de la Vie, La Maâlga, Carthage, Tunisie",
-    addressAr: "نهج جودة الحياة، المعلقة، قرطاج، تونس",
-    googleMaps: "https://maps.app.goo.gl/vfMoacpSpkjp6fYT7",
-    waze: "https://waze.com/ul?q=Dar%20Bouraoui%20Carthage",
+    city: "City",
+    cityAr: "المدينة",
+    address: "Street address, Neighbourhood, City, Country",
+    addressAr: "العنوان، الحي، المدينة، البلد",
+    googleMaps: "https://maps.google.com/?q=Venue%20Name",
+    waze: "https://waze.com/ul?q=Venue%20Name",
   },
 
   /**
-   * TODO: the couple must supply every programme time.
-   * `time: null` renders as "horaire à venir" / "الموعد لاحقًا".
+   * Programme times (HH:MM). `time: null` renders as "horaire à venir" / "الموعد لاحقًا".
+   * Titles and descriptions live in content/fr.ts and content/ar.ts.
    */
   programme: [
-    { key: "arrival", time: null },
-    { key: "ceremony", time: null },
-    { key: "dinner", time: null },
-    { key: "celebration", time: null },
+    { key: "arrival", time: "19:30" },
+    { key: "ceremony", time: "20:00" },
+    { key: "dinner", time: "21:00" },
+    { key: "celebration", time: "22:30" },
   ] as { key: ProgrammeKey; time: string | null }[],
 
-  /** TODO: photos supplied by the couple. While empty, the gallery is not rendered. */
+  /** Photos in /public/photos. While empty, the gallery is not rendered. */
   photos: [] as Photo[],
 
-  /** TODO: soft instrumental track at /public/audio/theme.mp3. Toggle hides itself if the file is missing. */
+  /** Soft instrumental track at /public/audio/theme.mp3. The toggle hides itself if the file is missing. */
   music: { src: "/audio/theme.mp3", volume: 0.4, fadeInMs: 2000 },
 
   /**
-   * TODO: public production URL (used for OG tags). Set NEXT_PUBLIC_SITE_URL;
+   * Public production URL (used for OG tags). Set NEXT_PUBLIC_SITE_URL;
    * on Vercel it falls back to the project's production domain.
    */
   siteUrl:

@@ -30,7 +30,7 @@ for (const size of sizes) {
   if (has("--open") || has("--mid") || scrolls.length) {
     const slow = has("--mid") ? 0.15 : 1;
     await page.evaluate((k) => void window.gsap?.globalTimeline.timeScale(k), slow);
-    await page.click('button[aria-label]', { position: undefined });
+    await page.click(".doors-open-btn", { position: undefined });
     if (has("--mid")) {
       let prev = 0;
       for (const t of [350, 800, 1300, 1900]) {

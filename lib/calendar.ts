@@ -2,7 +2,7 @@ import { siteConfig, weddingStart } from "@/site.config";
 import type { Dict } from "@/content/types";
 import { coupleFr, slug } from "@/lib/wedding";
 
-/** e.g. 20261029T190000Z */
+/** e.g. 20281014T190000Z */
 function utcStamp(d: Date): string {
   return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 }
