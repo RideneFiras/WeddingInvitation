@@ -1,0 +1,446 @@
+@import "tailwindcss";
+
+/* Self-hosted, trimmed Arabic faces (core Arabic block + shaping features). See README. */
+@font-face {
+  font-family: "Amiri OS";
+  src: url("/fonts/amiri-ar.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Aref Ruqaa OS";
+  src: url("/fonts/aref-ar.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Palette (brief §3.3) — the only colours allowed on the public site ── */
+:root {
+  --ivory: #f7f1e6;
+  --paper: #efe6d4;
+  --ink: #2b2118;
+  --gold-deep: #8c6a2e;
+  --gold: #b8924a;
+  --gold-light: #e6cf95;
+  --sage: #7e8b6a;
+  --night: #0e1526;
+  --night-soft: #1a2338;
+  --jasmine: #fffdf7;
+  /* The one allowed non-palette colour: real sealing wax. */
+  --wax-1: #7a1f1f;
+  --wax-2: #9e2b2b;
+
+  /* Day → night progress, 0 (ivory) … 1 (night). Driven by ScrollTrigger. */
+  --nightfall: 0;
+
+  --gold-gradient: linear-gradient(
+    100deg,
+    var(--gold-deep) 0%,
+    var(--gold) 22%,
+    var(--gold-light) 45%,
+    var(--gold) 62%,
+    var(--gold-deep) 82%,
+    var(--gold) 100%
+  );
+
+  --font-amiri: "Amiri OS";
+  --font-aref: "Aref Ruqaa OS";
+  --font-names: var(--font-pinyon), "Pinyon Script", cursive;
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-caps: var(--font-cormorant-sc), "Cormorant SC", Georgia, serif;
+  --font-body: var(--font-jost), "Jost", system-ui, sans-serif;
+  --font-ar-names: var(--font-aref), "Aref Ruqaa", serif;
+  --font-ar: var(--font-amiri), "Amiri", serif;
+}
+
+@theme inline {
+  --color-ivory: var(--ivory);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  /* text-gold-deep: a hair darker than --gold-deep so small labels pass WCAG AA on ivory */
+  --color-gold-deep: color-mix(in oklab, var(--gold-deep) 88%, var(--ink));
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-sage: var(--sage);
+  --color-night: var(--night);
+  --color-night-soft: var(--night-soft);
+  --color-jasmine: var(--jasmine);
+  --font-names: var(--font-names);
+  --font-display: var(--font-display);
+  --font-caps: var(--font-caps);
+  --font-body: var(--font-body);
+  --font-ar: var(--font-ar);
+  --font-ar-names: var(--font-ar-names);
+}
+
+@property --nightfall {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+html {
+  background: var(--ivory);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  background: var(--ivory);
+  color: var(--ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold-light);
+  color: var(--ink);
+}
+
+/* Arabic: swap every family for Amiri / Aref Ruqaa */
+[lang="ar"] {
+  --font-display: var(--font-amiri), "Amiri", serif;
+  --font-caps: var(--font-amiri), "Amiri", serif;
+  --font-body: var(--font-amiri), "Amiri", serif;
+}
+
+/* Subset fonts for the little Arabic shown in French mode (see app/fonts.ts). */
+.font-ar-label {
+  font-family: var(--font-amiri-label), var(--font-amiri), serif;
+}
+.font-ar-names-lite {
+  font-family: var(--font-aref-names), var(--font-aref), serif;
+}
+
+/* ── Typography helpers ── */
+.font-serif-body {
+  font-family: var(--font-display);
+  font-variant-numeric: oldstyle-nums;
+}
+.lining {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.caps {
+  font-family: var(--font-caps);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  font-size: 0.95rem;
+}
+[lang="ar"] .caps {
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 400;
+  font-size: 1.12rem;
+}
+
+/* Gold is never flat: gradient + clip, with a slow sheen. */
+.gold-text {
+  background-image: var(--gold-gradient);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.gold-sheen {
+  animation: sheen 7s ease-in-out infinite alternate;
+}
+@keyframes sheen {
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+/* Hairline rule with a diamond at its centre */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+}
+
+/* ── Paper grain: fixed feTurbulence overlay ── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  /* plain alpha (no blend mode): identical look, no full-screen blend on every scroll frame */
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .17 0 0 0 0 .13 0 0 0 0 .09 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ── The sky: ivory by day, night blue after the venue ── */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--ivory);
+}
+.sky::before {
+  /* A 300vh sky: night on top, a warm gold horizon, ivory below.
+     As --nightfall goes 0 → 1 it slides down, so the horizon sweeps the screen like a sunset. */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 300vh;
+  background: linear-gradient(
+    180deg,
+    var(--night) 0%,
+    var(--night) 26%,
+    var(--night-soft) 36%,
+    color-mix(in oklab, var(--night-soft), var(--gold-deep) 35%) 43%,
+    color-mix(in oklab, var(--gold), var(--gold-light) 50%) 51%,
+    var(--gold-light) 55%,
+    color-mix(in oklab, var(--gold-light), var(--ivory) 60%) 60%,
+    var(--ivory) 67%,
+    var(--ivory) 100%
+  );
+  transform: translate3d(0, calc((var(--nightfall) - 1) * 200vh), 0);
+  will-change: transform;
+}
+.sky::after {
+  /* soft vignette in Act II */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(14, 21, 38, 0.9) 100%);
+  opacity: var(--nightfall);
+}
+
+/* Text colour that follows the day→night progress.
+   It flips late (40%→75%) so it stays dark until the night actually sits behind it. */
+[data-invitation] {
+  --ink-flip: clamp(0, (var(--nightfall) - 0.4) * 2.85, 1);
+}
+.dusk-ink {
+  color: color-mix(in oklab, var(--ink), var(--jasmine) calc(var(--ink-flip) * 100%));
+}
+.dusk-muted {
+  color: color-mix(in oklab, var(--gold-deep), var(--gold-light) calc(var(--ink-flip) * 100%));
+}
+
+/* Scroll lock while the doors are closed. Pinning the body (scroll is always 0 here) also
+   stops iOS Safari from scrolling the page behind the fixed doors. */
+html.doors-closed {
+  overflow: hidden;
+  height: 100%;
+  overscroll-behavior: none;
+}
+html.doors-closed body {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* SplitText line masks keep descenders of Cormorant italic */
+.split-line-mask {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-sheen {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+.scroll-cue > span {
+  animation: cue 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue > span { animation: none; }
+}
+
+/* ── The invitation card: arched paper with one deckled edge (the only one on the page) ── */
+.invitation-card {
+  filter: drop-shadow(0 18px 30px rgba(43, 33, 24, 0.08)) drop-shadow(0 2px 4px rgba(43, 33, 24, 0.06));
+}
+.paper-card {
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(255, 253, 247, 0.7), transparent 60%),
+    var(--paper);
+  border-radius: 999px 999px 0 0 / 12rem 12rem 0 0;
+  -webkit-mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 9px) no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='10' viewBox='0 0 64 10'><path d='M0 0 H64 V4 L62 6 L59 4.5 L56 7 L53 5 L50 8 L47 5.5 L44 7.5 L41 4.5 L38 6.5 L35 5 L32 8.5 L29 5.5 L26 7 L23 4.5 L20 7.5 L17 5 L14 6.5 L11 4 L8 7 L5 5 L2 6.5 L0 4.5 Z'/></svg>")
+      bottom / 64px 10px repeat-x;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 9px) no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='10' viewBox='0 0 64 10'><path d='M0 0 H64 V4 L62 6 L59 4.5 L56 7 L53 5 L50 8 L47 5.5 L44 7.5 L41 4.5 L38 6.5 L35 5 L32 8.5 L29 5.5 L26 7 L23 4.5 L20 7.5 L17 5 L14 6.5 L11 4 L8 7 L5 5 L2 6.5 L0 4.5 Z'/></svg>")
+      bottom / 64px 10px repeat-x;
+}
+
+/* ── Venue ── */
+.venue-btn {
+  display: block;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in oklab, var(--gold) 70%, transparent);
+  font-family: var(--font-caps);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  font-size: 1rem;
+  line-height: 1;
+  color: color-mix(in oklab, var(--ink), var(--jasmine) calc(var(--ink-flip) * 100%));
+  background: color-mix(in oklab, var(--ivory), var(--night-soft) calc(var(--ink-flip) * 100%));
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+[lang="ar"] .venue-btn {
+  letter-spacing: 0;
+  text-transform: none;
+  font-family: var(--font-ar);
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+.venue-btn:hover,
+.venue-btn:focus-visible {
+  background: var(--gold);
+  color: var(--night);
+  border-color: var(--gold);
+}
+.venue-chandelier .chandelier-flames {
+  opacity: 0.35;
+  transition: opacity 1.4s ease, filter 1.4s ease;
+}
+.venue-chandelier {
+  transition: filter 1.6s ease;
+}
+.venue-chandelier.is-lit {
+  filter: drop-shadow(0 0 10px rgba(230, 207, 149, 0.55));
+}
+.venue-chandelier.is-lit .chandelier-flames {
+  opacity: 1;
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 4px #e6cf95) drop-shadow(0 0 10px rgba(255, 253, 247, 0.8));
+}
+.map-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: map-pulse 3.2s ease-out infinite;
+}
+@keyframes map-pulse {
+  from { transform: scale(0.5); opacity: 0.7; }
+  to { transform: scale(1.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-pulse { animation: none; }
+}
+
+/* ── Global toggles (they sit over both day and night) ── */
+.music-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  background: color-mix(in oklab, color-mix(in oklab, var(--ivory), var(--night) calc(var(--ink-flip) * 100%)) 80%, transparent);
+  color: color-mix(in oklab, var(--gold-deep), var(--gold-light) calc(var(--ink-flip) * 100%));
+  cursor: pointer;
+}
+.eq-bar {
+  display: block;
+  width: 2px;
+  height: 100%;
+  background: currentColor;
+  transform-origin: bottom;
+  transform: scaleY(0.25);
+}
+.music-toggle.is-playing .eq-bar {
+  animation: eq 1.1s ease-in-out infinite alternate;
+}
+@keyframes eq {
+  0% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+  100% { transform: scaleY(0.5); }
+}
+.lang-toggle {
+  color: color-mix(in oklab, var(--gold-deep), var(--gold-light) calc(var(--ink-flip) * 100%));
+}
+.lang-toggle--compact {
+  min-height: 44px;
+  padding: 0.25rem 0.9rem;
+  border: 1px solid color-mix(in oklab, var(--gold) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, color-mix(in oklab, var(--ivory), var(--night) calc(var(--ink-flip) * 100%)) 70%, transparent);
+}
+.gold-dust-fallback span {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 999px;
+  background: radial-gradient(circle, var(--jasmine), var(--gold-light) 45%, transparent 70%);
+  opacity: calc(var(--nightfall) * 0.8);
+  animation-name: dust-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes dust-rise {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(12px, -110vh, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle.is-playing .eq-bar { animation: none; transform: scaleY(0.7); }
+}
+
+.digit-roll {
+  animation: digit-roll 0.55s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+}
+@keyframes digit-roll {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .digit-roll { animation: none; }
+}
