@@ -6,7 +6,7 @@ const p = await c.newPage();
 p.on("pageerror", (e) => console.log("E", e.message));
 await p.goto("http://localhost:3200" + path, { waitUntil: "networkidle" });
 await p.screenshot({ path: `${process.env.OUT ?? "/tmp/claude-1000/shots"}/${tag}-00.png` });
-await p.click("button[aria-label]");
+await p.click(".doors-open-btn");
 await p.waitForTimeout(4200);
 if (lang === "ar") { await p.locator("button.lang-toggle").first().click(); await p.waitForTimeout(800); }
 let i = 1;

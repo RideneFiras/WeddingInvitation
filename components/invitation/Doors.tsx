@@ -244,7 +244,7 @@ export default function Doors({ dict, addressee, returning, onOpenStart, onOpene
             type="button"
             onClick={open}
             aria-label={dict.doors.open}
-            className="absolute inset-0 z-10 cursor-pointer"
+            className="doors-open-btn absolute inset-0 z-10 cursor-pointer"
             style={{ borderRadius: "50% 50% 0 0 / 25.86% 25.86% 0 0" }}
           />
         </div>
