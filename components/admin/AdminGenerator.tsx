@@ -3,8 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { dictionaries, type Lang } from "@/content";
 import { encodeGuest, type Guest } from "@/lib/guest-code";
+import { siteConfig } from "@/site.config";
+import { slug } from "@/lib/wedding";
 
-type Saved = Guest & { code: string; createdAt: string; side: "" | "omar" | "saousen"; notes: string };
+const { first: FIRST, second: SECOND } = siteConfig.couple.latin;
+
+type Saved = Guest & { code: string; createdAt: string; side: "" | "first" | "second"; notes: string };
 const STORE = "os-admin-links-v1";
 
 function load(): Saved[] {
@@ -44,7 +48,7 @@ export default function AdminGenerator({ missing }: { missing: string[] }) {
   const [list, setList] = useState<Saved[]>([]);
   const [copied, setCopied] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [sideFilter, setSideFilter] = useState<"" | "omar" | "saousen">("");
+  const [sideFilter, setSideFilter] = useState<"" | "first" | "second">("");
   const [bulk, setBulk] = useState("");
 
   useEffect(() => {
@@ -128,12 +132,12 @@ export default function AdminGenerator({ missing }: { missing: string[] }) {
   const exportCsv = () => {
     const header = ["salutation", "noms", "enveloppe", "langue", "côté", "notes", "lien", "créé le"];
     const rows = list.map((s) =>
-      [s.salutation, s.names.join(" & "), s.envelopeLine, s.lang, s.side, s.notes, linkFor(s.code), s.createdAt].map(csvEscape).join(","),
+      [s.salutation, s.names.join(" & "), s.envelopeLine, s.lang, s.side === "first" ? FIRST : s.side === "second" ? SECOND : "", s.notes, linkFor(s.code), s.createdAt].map(csvEscape).join(","),
     );
     const blob = new Blob(["﻿" + [header.join(","), ...rows].join("\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "invitations-omar-saousen.csv";
+    a.download = `invitations-${slug}.csv`;
     a.click();
     URL.revokeObjectURL(a.href);
   };
@@ -153,7 +157,7 @@ export default function AdminGenerator({ missing }: { missing: string[] }) {
         <header className="flex flex-wrap items-baseline justify-between gap-3">
           <div>
             <h1 className="font-display text-4xl italic">Invitations</h1>
-            <p className="mt-1 text-sm text-ink/70">Omar &amp; Saousen · 29 octobre 2026 — créer un lien personnalisé</p>
+            <p className="mt-1 text-sm text-ink/70">{dictionaries.fr.meta.title} — créer un lien personnalisé</p>
           </div>
           <a href="/" target="_blank" className="text-sm underline decoration-gold underline-offset-4">
             Voir l&apos;invitation
@@ -237,8 +241,8 @@ export default function AdminGenerator({ missing }: { missing: string[] }) {
                 {(
                   [
                     ["", "—"],
-                    ["omar", "Omar"],
-                    ["saousen", "Saousen"],
+                    ["first", FIRST],
+                    ["second", SECOND],
                   ] as const
                 ).map(([v, label]) => (
                   <button key={v} type="button" onClick={() => setSide(v)} className={`${btn} border ${side === v ? "border-ink bg-ink text-ivory" : "border-ink/25"}`}>
@@ -310,8 +314,8 @@ export default function AdminGenerator({ missing }: { missing: string[] }) {
             <input className={`${input} mt-0 max-w-xs`} placeholder="Rechercher…" value={query} onChange={(e) => setQuery(e.target.value)} />
             <select className={`${input} mt-0 w-auto`} value={sideFilter} onChange={(e) => setSideFilter(e.target.value as typeof sideFilter)}>
               <option value="">Tous les côtés</option>
-              <option value="omar">Omar</option>
-              <option value="saousen">Saousen</option>
+              <option value="first">{FIRST}</option>
+              <option value="second">{SECOND}</option>
             </select>
           </div>
           <ul className="mt-4 divide-y divide-ink/10 border-y border-ink/10">
@@ -322,7 +326,7 @@ export default function AdminGenerator({ missing }: { missing: string[] }) {
                     {s.salutation} {dictionaries[s.lang].joinNames(s.names)}
                     <span className="ms-2 text-xs uppercase tracking-wider text-ink/50">
                       {s.lang}
-                      {s.side ? ` · ${s.side}` : ""}
+                      {s.side ? ` · ${s.side === "first" ? FIRST : SECOND}` : ""}
                     </span>
                   </p>
                   {(s.envelopeLine || s.notes) && (

@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { fontVariables } from "./fonts";
 import { siteConfig } from "@/site.config";
+import { dictionaries } from "@/content";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
-  title: "Omar & Saousen · 29 octobre 2026",
-  description: "Le jeudi 29 octobre 2026 · Dar Bouraoui, Carthage",
+  title: dictionaries.fr.meta.title,
+  description: dictionaries.fr.meta.ogDescriptionGeneric,
   robots: { index: false, follow: false },
 };
 

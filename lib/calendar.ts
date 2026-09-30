@@ -1,7 +1,8 @@
 import { siteConfig, weddingStart } from "@/site.config";
 import type { Dict } from "@/content/types";
+import { coupleFr, slug } from "@/lib/wedding";
 
-/** 20261029T190000Z */
+/** e.g. 20261029T190000Z */
 function utcStamp(d: Date): string {
   return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 }
@@ -33,11 +34,11 @@ export function buildIcs(dict: Dict): string {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Omar & Saousen//Invitation//FR",
+    `PRODID:-//${coupleFr}//Invitation//FR`,
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:mariage-omar-saousen-${siteConfig.date.iso}@invitation`,
+    `UID:mariage-${slug}-${siteConfig.date.iso}@invitation`,
     `DTSTAMP:${utcStamp(new Date())}`,
     `DTSTART:${utcStamp(start)}`,
     `DTEND:${utcStamp(end)}`,

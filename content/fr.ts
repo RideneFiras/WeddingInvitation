@@ -1,12 +1,22 @@
 import type { Dict } from "./types";
+import { siteConfig } from "@/site.config";
+import { coupleFr, dateParts, ofCoupleFr } from "@/lib/wedding";
+
+const weekdays = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+const { day, monthIndex, year, weekdayIndex } = dateParts;
+const weekday = weekdays[weekdayIndex];
+/** "jeudi 29 octobre 2026" */
+const fullDate = `${weekday} ${day} ${months[monthIndex]} ${year}`;
+const { venue } = siteConfig;
 
 const fr: Dict = {
   lang: "fr",
   dir: "ltr",
   meta: {
-    title: "Omar & Saousen · 29 octobre 2026",
-    ogTitle: "Invitation au mariage d'Omar & Saousen",
-    ogDescriptionGeneric: "Le jeudi 29 octobre 2026 · Dar Bouraoui, Carthage",
+    title: `${coupleFr} · ${day} ${months[monthIndex]} ${year}`,
+    ogTitle: `Invitation au mariage ${ofCoupleFr}`,
+    ogDescriptionGeneric: `Le ${fullDate} · ${venue.name}, ${venue.city}`,
     ogFor: "Pour",
   },
   doors: {
@@ -16,7 +26,7 @@ const fr: Dict = {
     open: "Ouvrir l'invitation",
   },
   hero: {
-    weekday: "Jeudi",
+    weekday: weekday[0].toUpperCase() + weekday.slice(1),
     and: "&",
     scroll: "Défiler",
   },
@@ -27,9 +37,9 @@ const fr: Dict = {
       `Les familles ${a} et ${b} ont l'immense joie de vous convier à la célébration du mariage de leurs enfants`,
     familiesFallback:
       "Nos familles ont l'immense joie de vous convier à la célébration du mariage de leurs enfants",
-    dateLine: "Le jeudi 29 octobre 2026",
+    dateLine: `Le ${fullDate}`,
     timeLine: (t) => `à ${t.replace(":", "h")}`,
-    atVenue: "à Dar Bouraoui, La Maâlga, Carthage",
+    atVenue: `à ${venue.name}, ${venue.area}`,
     unknownCode:
       "Ce lien semble incomplet. Pour toute question, n'hésitez pas à contacter la famille.",
   },
@@ -45,7 +55,7 @@ const fr: Dict = {
     title: "Le déroulé de la soirée",
     items: {
       arrival: { title: "Accueil des invités", note: "Autour d'un rafraîchissement, sous les arcades" },
-      ceremony: { title: "La cérémonie", note: "L'union d'Omar & Saousen" },
+      ceremony: { title: "La cérémonie", note: `L'union ${ofCoupleFr}` },
       dinner: { title: "Le dîner", note: "Un repas partagé en famille et entre amis" },
       celebration: { title: "La soirée", note: "Musique, danse et lumières jusqu'au bout de la nuit" },
     },
@@ -63,23 +73,24 @@ const fr: Dict = {
     label: "Réservez la date",
     ics: "Ajouter au calendrier",
     google: "Google Agenda",
-    eventTitle: "Mariage d'Omar & Saousen",
+    eventTitle: `Mariage ${ofCoupleFr}`,
   },
   closing: {
     line: "Nous avons hâte de célébrer avec vous",
-    signature: "Omar & Saousen",
+    signature: coupleFr,
   },
   ui: {
     music: { play: "Lancer la musique", pause: "Couper la musique" },
     language: "العربية",
     languageLabel: "Lire en arabe",
   },
-  weekdays: ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"],
+  weekdays,
+  months,
   salutations: { m: "Cher", f: "Chère", pl: "Chers", fpl: "Chères" },
   joinNames: (names) => names.join(" & "),
   share: {
     message: (salutation, names, link) =>
-      `${salutation} ${names},\n\nC'est avec une immense joie que nous vous adressons notre invitation au mariage d'Omar & Saousen, le jeudi 29 octobre 2026.\n\n${link}`,
+      `${salutation} ${names},\n\nC'est avec une immense joie que nous vous adressons notre invitation au mariage ${ofCoupleFr}, le ${fullDate}.\n\n${link}`,
   },
 };
 

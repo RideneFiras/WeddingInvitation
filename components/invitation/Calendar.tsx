@@ -7,6 +7,7 @@ import { useScrollMotion } from "@/lib/scroll-motion";
 import { useReveal } from "@/lib/reveal";
 import type { Dict } from "@/content/types";
 import { googleCalendarUrl } from "@/lib/calendar";
+import { slug } from "@/lib/wedding";
 import { JasmineSprig } from "../ornaments/Ornaments";
 
 /** "Réservez la date": .ics download + Google Calendar. (RSVP was removed at the couple's request.) */
@@ -40,7 +41,7 @@ export default function Calendar({ dict }: { dict: Dict }) {
           {dict.invitation.dateLine}
         </p>
         <div data-reveal="fade" className="mt-8 flex w-full flex-col gap-3">
-          <a className="venue-btn" href={`/api/ics?lang=${dict.lang}`} download="omar-saousen.ics">
+          <a className="venue-btn" href={`/api/ics?lang=${dict.lang}`} download={`${slug}.ics`}>
             {c.ics}
           </a>
           <a className="venue-btn" href={googleCalendarUrl(dict)} target="_blank" rel="noopener noreferrer">

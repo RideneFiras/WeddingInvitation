@@ -45,6 +45,7 @@ export type Dict = {
     languageLabel: string;
   };
   weekdays: string[];
+  months: string[];
   /** Suggested salutations: masculine, feminine, plural, feminine plural. */
   salutations: { m: string; f: string; pl: string; fpl: string };
   joinNames: (names: string[]) => string;

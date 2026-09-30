@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   // Font files read at runtime by the OG image route.
   outputFileTracingIncludes: {
     "/api/og/[code]": ["./assets/fonts/**"],
+    "/icon": ["./assets/fonts/**"],
   },
 };
 

@@ -98,7 +98,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ code: s
             {`${d} · ${m} · ${y}`}
           </div>
           <div style={{ fontFamily: "CormorantSC", fontSize: 24, letterSpacing: 5, marginTop: 8, color: C.goldDeep, textTransform: "lowercase" }}>
-            {`${siteConfig.venue.name} · carthage`}
+            {`${siteConfig.venue.name} · ${siteConfig.venue.city.toLowerCase()}`}
           </div>
         </div>
       </div>

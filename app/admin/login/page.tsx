@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { coupleFr } from "@/lib/wedding";
 import { ADMIN_COOKIE, adminPassword, adminToken, safeEqual } from "@/lib/admin-auth";
 
 export const metadata: Metadata = { title: "Connexion · Invitations", robots: { index: false } };
@@ -27,7 +28,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/admin/logi
     <main className="flex min-h-svh items-center justify-center bg-ivory px-5 font-body text-ink">
       <form action={login} className="w-full max-w-xs">
         <h1 className="font-display text-3xl italic">Invitations</h1>
-        <p className="mt-1 text-sm text-ink/70">Omar &amp; Saousen · espace famille</p>
+        <p className="mt-1 text-sm text-ink/70">{coupleFr} · espace famille</p>
         <label className="mt-8 block text-sm" htmlFor="password">
           Mot de passe
         </label>

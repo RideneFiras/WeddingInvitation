@@ -38,7 +38,7 @@ for (const [label, c] of [["fr", FR], ["ar", AR], ["generic", "_"]]) {
 {
   const r = await fetch(`${base}/api/ics`);
   const t = await r.text();
-  check(".ics: calendar file with 19:00Z start (20:00 Tunis)", r.headers.get("content-type")?.includes("text/calendar") && t.includes("DTSTART:20261029T190000Z"));
+  check(".ics: calendar file with a UTC start", r.headers.get("content-type")?.includes("text/calendar") && /DTSTART:\d{8}T\d{6}Z/.test(t));
 }
 
 const browser = await chromium.launch();

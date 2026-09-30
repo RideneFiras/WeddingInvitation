@@ -87,7 +87,7 @@ export default function Venue({ dict }: { dict: Dict }) {
   );
 }
 
-/** A quiet, hand-drawn impression of La Maâlga: coastline, a few streets, a gold pin. */
+/** A quiet, hand-drawn impression of the neighbourhood: coastline, a few streets, a gold pin. */
 function MiniMap({ className, label }: { className?: string; label: string }) {
   return (
     <svg viewBox="0 0 200 170" className={className} role="img" aria-label={label} fill="none" stroke="currentColor" strokeLinecap="round">

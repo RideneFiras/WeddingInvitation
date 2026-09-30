@@ -46,6 +46,9 @@ export const siteConfig = {
     nameAr: "دار بوراوي",
     areaAr: "المعلقة، قرطاج",
     area: "La Maâlga, Carthage",
+    /** Short place name shown with the venue (hero, previews). */
+    city: "Carthage",
+    cityAr: "قرطاج",
     address: "Rue Qualité de la Vie, La Maâlga, Carthage, Tunisie",
     addressAr: "نهج جودة الحياة، المعلقة، قرطاج، تونس",
     googleMaps: "https://maps.app.goo.gl/vfMoacpSpkjp6fYT7",

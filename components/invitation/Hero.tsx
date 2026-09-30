@@ -126,7 +126,7 @@ export default function Hero({ dict, revealed }: Props) {
           {y}
         </p>
         <p className="hero-fade caps mt-4 text-ink/80">
-          {ar ? siteConfig.venue.nameAr : siteConfig.venue.name} <span className="text-gold">·</span> {ar ? "قرطاج" : "Carthage"}
+          {ar ? siteConfig.venue.nameAr : siteConfig.venue.name} <span className="text-gold">·</span> {ar ? siteConfig.venue.cityAr : siteConfig.venue.city}
         </p>
       </div>
 

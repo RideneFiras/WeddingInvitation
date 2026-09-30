@@ -1,4 +1,15 @@
 import type { Dict } from "./types";
+import { siteConfig } from "@/site.config";
+import { coupleAr, dateParts } from "@/lib/wedding";
+
+const weekdays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+// Tunisian month names
+const months = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+const { day, monthIndex, year, weekdayIndex } = dateParts;
+const weekday = weekdays[weekdayIndex];
+/** "الخميس 29 أكتوبر 2026" */
+const fullDate = `${weekday} ${day} ${months[monthIndex]} ${year}`;
+const { venue } = siteConfig;
 
 /**
  * TODO: have a native speaker review this file before launch.
@@ -8,9 +19,9 @@ const ar: Dict = {
   lang: "ar",
   dir: "rtl",
   meta: {
-    title: "عمر و سوسن · 29 أكتوبر 2026",
-    ogTitle: "دعوة لحضور حفل زفاف عمر و سوسن",
-    ogDescriptionGeneric: "الخميس 29 أكتوبر 2026 · دار بوراوي، قرطاج",
+    title: `${coupleAr} · ${day} ${months[monthIndex]} ${year}`,
+    ogTitle: `دعوة لحضور حفل زفاف ${coupleAr}`,
+    ogDescriptionGeneric: `${fullDate} · ${venue.nameAr}، ${venue.cityAr}`,
     ogFor: "إلى",
   },
   doors: {
@@ -20,7 +31,7 @@ const ar: Dict = {
     open: "افتح الدعوة",
   },
   hero: {
-    weekday: "الخميس",
+    weekday,
     and: "و",
     scroll: "مرّر",
   },
@@ -30,9 +41,9 @@ const ar: Dict = {
     families: (a, b) =>
       `بكل فرح وسرور، تتشرّف عائلتا ${a} و${b} بدعوتكم لحضور حفل زفاف أبنائهما`,
     familiesFallback: "بكل فرح وسرور، تتشرّف عائلتانا بدعوتكم لحضور حفل زفاف أبنائهما",
-    dateLine: "يوم الخميس 29 أكتوبر 2026",
+    dateLine: `يوم ${fullDate}`,
     timeLine: (t) => `على الساعة ${t}`,
-    atVenue: "بدار بوراوي، المعلقة، قرطاج",
+    atVenue: `ب${venue.nameAr}، ${venue.areaAr}`,
     unknownCode: "يبدو أن هذا الرابط غير مكتمل. لأي استفسار، يسعدنا تواصلكم مع العائلة.",
   },
   countdown: {
@@ -48,7 +59,7 @@ const ar: Dict = {
     title: "مجريات السهرة",
     items: {
       arrival: { title: "استقبال الضيوف", note: "مع مشروبات منعشة تحت الأقواس" },
-      ceremony: { title: "مراسم الزفاف", note: "قِران عمر و سوسن" },
+      ceremony: { title: "مراسم الزفاف", note: `قِران ${coupleAr}` },
       dinner: { title: "العشاء", note: "مائدة تجمع الأهل والأحبّة" },
       celebration: { title: "السهرة", note: "موسيقى ورقص وأضواء حتى آخر الليل" },
     },
@@ -66,24 +77,25 @@ const ar: Dict = {
     label: "احفظوا الموعد",
     ics: "أضف إلى التقويم",
     google: "تقويم Google",
-    eventTitle: "حفل زفاف عمر و سوسن",
+    eventTitle: `حفل زفاف ${coupleAr}`,
   },
   closing: {
     line: "ننتظركم بشوق لنحتفل معًا",
-    signature: "عمر و سوسن",
+    signature: coupleAr,
   },
   ui: {
     music: { play: "تشغيل الموسيقى", pause: "إيقاف الموسيقى" },
     language: "Français",
     languageLabel: "Lire en français",
   },
-  weekdays: ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"],
+  weekdays,
+  months,
   salutations: { m: "عزيزي", f: "عزيزتي", pl: "أعزّائي", fpl: "عزيزاتي" },
   // Arabic "و" attaches to an Arabic name ("كريم وأميرة"); with Latin names it stands alone.
   joinNames: (names) => names.join(names.every((n) => /[\u0600-\u06FF]/.test(n)) ? " و" : " و "),
   share: {
     message: (salutation, names, link) =>
-      `${salutation} ${names}،\n\nبكل فرح وسرور، يسعدنا أن نوجّه إليكم دعوتنا لحضور حفل زفاف عمر و سوسن، يوم الخميس 29 أكتوبر 2026.\n\n${link}`,
+      `${salutation} ${names}،\n\nبكل فرح وسرور، يسعدنا أن نوجّه إليكم دعوتنا لحضور حفل زفاف ${coupleAr}، يوم ${fullDate}.\n\n${link}`,
   },
 };
 

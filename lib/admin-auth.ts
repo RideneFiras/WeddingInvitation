@@ -8,7 +8,7 @@ export const ADMIN_COOKIE = "os_admin";
 export async function adminToken(password: string): Promise<string> {
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey("raw", enc.encode(password), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode("omar-saousen-admin-v1"));
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode("wedding-invite-admin-v1"));
   return Array.from(new Uint8Array(sig), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
